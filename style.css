@@ -1,4 +1,8 @@
-#cat_pic {
+body {
+    font-family: "Comic Sans MS", "Times New Roman";
+}
+
+#cat_box img {
     width: 700px;
     cursor: pointer;
 }
