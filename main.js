@@ -34,11 +34,22 @@ function init_cats() {
         cat.appendChild(click_counter);
         cat_box.appendChild(cat);
 
-        cat.addEventListener('click', function(evt) {
-            var cat_name_str_lowercase = evt.target.alt.toLowerCase();
-            ++cat_data[cat_name_str_lowercase].click_num;
-            document.querySelector('#' + cat_name_str_lowercase + ' p').innerHTML = cat_data[cat_name_str_lowercase].click_num;
-        });
+        // OPTION #1: use event data to search DOM for specific cat's counter, then update it accordingly
+        // cat.addEventListener('click', function(evt) {
+        //     var cat_name_str_lowercase = evt.target.alt.toLowerCase();
+        //     var click_counter = document.querySelector('#' + cat_name_str_lowercase + ' p');
+
+        //     ++cat_data[cat_name_str_lowercase].click_num;
+        //     click_counter.innerHTML = cat_data[cat_name_str_lowercase].click_num;
+        // });
+
+        // OPTION #2: use IIFE (immediately-invoked function expression) to update specific cat's counter
+        cat.addEventListener('click', (function(click_num, click_counter) {
+            return function() {
+                ++click_num;
+                click_counter.innerHTML = click_num;
+            }
+        })(cat_data[key].click_num, click_counter));
     }
 }
 
