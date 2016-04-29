@@ -1,5 +1,5 @@
-/* DATA */
-var cat_data = {
+/* MODEL */
+var cat_model = {
     holly: {
         img_loc: '/img/holly.jpg',
         click_num: 0
@@ -22,62 +22,75 @@ var cat_data = {
     }
 };
 
-/* RENDER */
-function render_cat(cat_name_str, cat_box) {
-    cat_box.innerHTML = '';
-
-    var cat_name_str_capital = capitalize_str(cat_name_str);
-
-    var cat = document.createElement('div');
-    cat.setAttribute('id', cat_name_str);
-
-    var cat_name = document.createElement('h2');
-    cat_name.innerHTML = cat_name_str_capital;
-
-    var cat_img = document.createElement('img');
-    cat_img.setAttribute('src', cat_data[cat_name_str].img_loc);
-    cat_img.setAttribute('alt', cat_name_str_capital);
-
-    var click_counter = document.createElement('p');
-    click_counter.innerHTML = 'Clicks: ' + cat_data[cat_name_str].click_num;
-
-    cat.appendChild(cat_name);
-    cat.appendChild(cat_img);
-    cat.appendChild(click_counter);
-    cat_box.appendChild(cat);
-
-    cat.addEventListener('click', (function(cat_name_str, click_counter) {
-        return function() {
-            ++cat_data[cat_name_str].click_num;
-            click_counter.innerHTML = 'Clicks: ' + cat_data[cat_name_str].click_num;
-        }
-    })(cat_name_str, click_counter));
-}
-
-function init_cat_clicker() {
+/* VIEW */
+function render_cat_menu() {
     var cat_menu = document.getElementById('cat_menu');
-    var cat_box = document.getElementById('cat_box');
 
-    for(var key in cat_data) {
-        var cat_name_str_capital = capitalize_str(key);
-
+    for(var key in cat_model) {
         // create item for cat_menu
         var item = document.createElement('li');
-        item.innerHTML = cat_name_str_capital;
+        item.innerHTML = key;
 
         cat_menu.appendChild(item);
 
-        item.addEventListener('click', (function(cat_name_str) {
+        item.addEventListener('click', (function(key) {
             return function() {
-                render_cat(cat_name_str, cat_box);
+                render_cat_box(key);
             }
         })(key));
     }
+
+    return cat_menu;
 }
 
-/* UTIL */
-function capitalize_str(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+function render_cat_box(cat_name) {
+    var cat_box = document.getElementById('cat_box');
+
+    cat_box.innerHTML = '';
+
+    var cat = document.createElement('div');
+    cat.setAttribute('id', cat_name);
+
+    var cat_header = document.createElement('h2');
+    cat_header.innerHTML = cat_name;
+
+    var cat_img = document.createElement('img');
+    cat_img.setAttribute('src', cat_model[cat_name].img_loc);
+    cat_img.setAttribute('alt', cat_name);
+
+    var counter = document.createElement('p');
+    counter.setAttribute('id', 'counter');
+
+    cat.appendChild(cat_header);
+    cat.appendChild(cat_img);
+    cat.appendChild(counter);
+
+    cat.addEventListener('click', function() {
+        count_click(cat_name);
+        render_counter(cat_name);
+    });
+
+    cat_box.appendChild(cat);
+
+    render_counter(cat_name);
+
+    return cat_box;
 }
 
-init_cat_clicker();
+function render_counter(cat_name) {
+    var counter = document.getElementById('counter');
+    counter.innerHTML = 'Clicks: ' + cat_model[cat_name].click_num;
+
+    return counter;
+}
+
+/* OCTOPUS */
+function change_cat(cat_name) {
+    render_cat(cat_name);
+}
+
+function count_click(cat_name) {
+    ++cat_model[cat_name].click_num;
+}
+
+render_cat_menu();

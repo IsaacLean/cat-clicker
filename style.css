@@ -4,6 +4,11 @@ body {
 
 #cat_menu li {
     cursor: pointer;
+    text-transform: capitalize;
+}
+
+#cat_box h2 {
+    text-transform: capitalize;
 }
 
 #cat_box img {
