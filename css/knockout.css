@@ -1,0 +1,12 @@
+body {
+    font-family: "Comic Sans MS", "Times New Roman";
+}
+
+img {
+    width: 700px;
+    cursor: pointer;
+}
+
+#cat_list li {
+    cursor: pointer;
+}
